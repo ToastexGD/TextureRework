@@ -1,10 +1,10 @@
 {
-	"geode": "4.10.2",
+	"geode": "5.0.0-beta.1",
 	"gd": {
-		"win": "2.2074",
-		"android": "2.2074",
-		"mac": "2.2074",
-		"ios": "2.2074"
+		"win": "2.2081",
+		"android": "2.2081",
+		"mac": "2.2081",
+		"ios": "2.2081"
 	},
 	"id": "toastexgd.texturerework",
 	"name": "TextureRework",
@@ -13,5 +13,9 @@
 	"links": {
 		"source": "https://github.com/ToastexGD/TextureRework"
 	},
-	"description": "Texture rework that fixes ugly textures"
+	"description": "Texture rework that fixes ugly textures",
+	"tags": ["interface", "customization"],
+	"dependencies": {
+		"geode.node-ids": "1.22.0"
+	}
 }

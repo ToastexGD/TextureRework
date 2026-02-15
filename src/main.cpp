@@ -54,7 +54,7 @@ class $modify(CharacterColorPage) {
     void createColorMenu() {
         CharacterColorPage::createColorMenu();
 
-        geode::queueInMainThread([this]() {
+        auto callback = geode::Function<void()>([this]() {
             auto menu = this->getChildByIDRecursive("buttons-menu");
             if (!menu) return;
 
@@ -66,6 +66,7 @@ class $modify(CharacterColorPage) {
                     lock->setDisplayFrame(CCSpriteFrameCache::get()->spriteFrameByName("GJ_lock_001.png"));
             }
         });
+        geode::queueInMainThread(std::move(callback));
     }
 };
 
