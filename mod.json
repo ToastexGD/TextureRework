@@ -16,6 +16,6 @@
 	"description": "Texture rework that fixes ugly textures",
 	"tags": ["interface", "customization"],
 	"dependencies": {
-		"geode.node-ids": "1.22.0"
+		"geode.node-ids": ">=1.22.0"
 	}
 }

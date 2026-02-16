@@ -1,7 +1,7 @@
 #include <Geode/Geode.hpp>
 #include <Geode/modify/GJGarageLayer.hpp>
 #include <Geode/modify/CharacterColorPage.hpp>
-#include <Geode/modify/MenuLayer.hpp>
+
 
 using namespace geode::prelude;
 
@@ -67,34 +67,5 @@ class $modify(CharacterColorPage) {
             }
         });
         geode::queueInMainThread(std::move(callback));
-    }
-};
-
-class $modify(MenuLayer) {
-    bool init() {
-        if (!MenuLayer::init()) return false;
-
-        auto moreGames = this->getChildByIDRecursive("more-games-button");
-        auto chestPos = moreGames ? moreGames->getPosition() : ccp(0, 0);
-        auto rightMenu = moreGames ? moreGames->getParent() : nullptr;
-
-        if (moreGames) moreGames->removeFromParent();
-
-        auto ng = this->getChildByIDRecursive("newgrounds-button");
-        if (ng) ng->removeFromParent();
-
-        auto bottom = static_cast<CCMenu*>(this->getChildByIDRecursive("bottom-menu"));
-        if (bottom) bottom->updateLayout();
-
-        auto chest = this->getChildByIDRecursive("daily-chest-button");
-        if (chest && rightMenu) {
-            chest->retain();
-            chest->removeFromParent();
-            rightMenu->addChild(chest);
-            chest->setPosition(chestPos);
-            chest->release();
-        }
-
-        return true;
     }
 };
