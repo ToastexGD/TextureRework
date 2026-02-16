@@ -4,3 +4,10 @@
 - Replaces lock textures in the icon select menu
 - Hides the username lock in the garage
 - More texture settings and changes soon!
+
+# v1.0.1
+
+- Replaces lock textures in the icon select menu
+- Hides the username lock in the garage
+- More texture settings and changes soon!
+- fixed bugs regarding menulayer
