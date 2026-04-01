@@ -1,6 +1,8 @@
 #include <Geode/Geode.hpp>
 #include <Geode/modify/GJGarageLayer.hpp>
 #include <Geode/modify/CharacterColorPage.hpp>
+#include <Geode/modify/MoreSearchLayer.hpp>
+
 
 
 using namespace geode::prelude;
@@ -42,8 +44,11 @@ class $modify(GJGarageLayer) {
                 gsm->getItemUnlockState(id, ut) == 0 && !isUnlockedByDefault(id, ut);
 
                 for (auto s : CCArrayExt<CCSprite*>(icon->getChildren())) {
-                    if (s != icon->m_player)
-                    s->setDisplayFrame(CCSpriteFrameCache::get()->spriteFrameByName(is221 ? "GJ_lockGray_001.png" : "GJ_lock_001.png"));
+                    if (s != icon->m_player) {
+                        s->setDisplayFrame(CCSpriteFrameCache::get()->spriteFrameByName(is221 ? "GJ_lockGray_001.png" : "GJ_lock_001.png"));
+                        s->setFlipX(false);
+                        s->setFlipY(false);
+                    }
                 }
             }
         }
@@ -62,10 +67,51 @@ class $modify(CharacterColorPage) {
                 auto color = btn->getChildByType<ColorChannelSprite>(0);
                 if (!color) continue;
 
-                for (auto lock : CCArrayExt<CCSprite*>(color->getChildren()))
+                for (auto lock : CCArrayExt<CCSprite*>(color->getChildren())) {
                     lock->setDisplayFrame(CCSpriteFrameCache::get()->spriteFrameByName("GJ_lock_001.png"));
+                    lock->setFlipX(false);
+                    lock->setFlipY(false);
+                }
             }
         });
         geode::queueInMainThread(std::move(callback));
+    }
+};
+
+class $modify(MoreSearchLayer) {
+    bool init() {
+        if (!MoreSearchLayer::init()) return false;
+
+        auto mainMenu = m_mainLayer->getChildByID("main-menu");
+        if (!mainMenu) return true;
+
+        auto legendary = mainMenu->getChildByID("legendary-filter-toggler");
+        auto mythic = mainMenu->getChildByID("mythic-filter-toggler");
+        auto legendaryLabel = m_mainLayer->getChildByID("legendary-filter-label");
+        auto mythicLabel = m_mainLayer->getChildByID("mythic-filter-label");
+
+        auto uncompleted = mainMenu->getChildByID("uncompleted-filter-toggler");
+        auto completed = mainMenu->getChildByID("completed-filter-toggler");
+        if (uncompleted && completed && legendary && mythic) {
+            float leftX = uncompleted->getPositionX();
+            float midX = completed->getPositionX();
+            float rowY = legendary->getPositionY();
+
+            legendary->setPosition(ccp(leftX, rowY));
+            mythic->setPosition(ccp(midX, rowY));
+        }
+
+        auto uncompletedLabel = m_mainLayer->getChildByID("uncompleted-filter-label");
+        auto completedLabel = m_mainLayer->getChildByID("completed-filter-label");
+        if (uncompletedLabel && completedLabel && legendaryLabel && mythicLabel) {
+            float leftX = uncompletedLabel->getPositionX();
+            float midX = completedLabel->getPositionX();
+            float rowY = legendaryLabel->getPositionY();
+
+            legendaryLabel->setPosition(ccp(leftX, rowY));
+            mythicLabel->setPosition(ccp(midX, rowY));
+        }
+
+        return true;
     }
 };
