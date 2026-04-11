@@ -3,8 +3,6 @@
 #include <Geode/modify/CharacterColorPage.hpp>
 #include <Geode/modify/MoreSearchLayer.hpp>
 
-
-
 using namespace geode::prelude;
 
 bool isUnlockedByDefault(int id, UnlockType type) {
@@ -42,12 +40,13 @@ class $modify(GJGarageLayer) {
 
                 bool is221 = ut != UnlockType::Col1 && ut != UnlockType::Col2 &&
                 gsm->getItemUnlockState(id, ut) == 0 && !isUnlockedByDefault(id, ut);
-
-                for (auto s : CCArrayExt<CCSprite*>(icon->getChildren())) {
-                    if (s != icon->m_player) {
-                        s->setDisplayFrame(CCSpriteFrameCache::get()->spriteFrameByName(is221 ? "GJ_lockGray_001.png" : "GJ_lock_001.png"));
-                        s->setFlipX(false);
-                        s->setFlipY(false);
+                for (auto child : CCArrayExt<CCNode*>(icon->getChildren())) {
+                    if (auto s = typeinfo_cast<CCSprite*>(child)) {
+                        if (s != icon->m_player) {
+                            s->setDisplayFrame(CCSpriteFrameCache::get()->spriteFrameByName(is221 ? "GJ_lockGray_001.png" : "GJ_lock_001.png"));
+                            s->setFlipX(false);
+                            s->setFlipY(false);
+                        }
                     }
                 }
             }
@@ -67,10 +66,13 @@ class $modify(CharacterColorPage) {
                 auto color = btn->getChildByType<ColorChannelSprite>(0);
                 if (!color) continue;
 
-                for (auto lock : CCArrayExt<CCSprite*>(color->getChildren())) {
-                    lock->setDisplayFrame(CCSpriteFrameCache::get()->spriteFrameByName("GJ_lock_001.png"));
-                    lock->setFlipX(false);
-                    lock->setFlipY(false);
+                //ccnode so it doesn't crash when I cast it
+                for (auto child : CCArrayExt<CCNode*>(color->getChildren())) {
+                    if (auto lock = typeinfo_cast<CCSprite*>(child)) {
+                        lock->setDisplayFrame(CCSpriteFrameCache::get()->spriteFrameByName("GJ_lock_001.png"));
+                        lock->setFlipX(false);
+                        lock->setFlipY(false);
+                    }
                 }
             }
         });
